@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>给陈昌裕&梁其亮的婚礼祝福</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --bg: #fdfaf5;
+            --text: #5c3c20;
+            --accent: #d9738f;
+            --light-pink: #fff0f3;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Serif SC', serif;
+            overflow-x: hidden;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        /* 花瓣飘落容器 */
+        #petal-container {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            pointer-events: none; 
+            z-index: 0;
+        }
+
+        /* 顶部大标题 */
+        .header-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            padding: 20px 15px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(253, 250, 245, 0.95) 0%, rgba(255, 240, 243, 0.9) 100%);
+        }
+
+        .header-section h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.8s ease forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 3px;
+            line-height: 1.2;
+        }
+
+        .header-section .subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 8px;
+            color: var(--accent);
+            opacity: 0;
+            animation: fadeInUp 1.8s 0.6s ease forwards;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .wedding-date {
+            font-size: 0.95rem;
+            color: #a67c52;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeInUp 1.8s 1s ease forwards;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px dashed var(--gold);
+            font-family: 'ZCOOL XiaoWei', serif;
+        }
+
+        /* 内容区块 */
+        .content-section {
+            width: 92%;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 20px var(--shadow);
+            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s 1.2s ease forwards;
+        }
+
+        .quote-box {
+            text-align: center;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .quote-box:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        /* 照片区域 - 明确指出替换位置 */
+        .photo-area {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #fff5f7, #fff0f3);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            color: var(--accent);
+            border: 2px dashed rgba(217, 115, 143, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .photo-placeholder .photo-label {
+            font-size: 0.9rem;
+            color: #c99;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            font-family: 'ZCOOL XiaoWei', serif;
+        }
+
+        .photo-note {
+            font-size: 0.8rem;
+            color: #aaa;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* 双联照片样式 */
+        .couple-photos {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .couple-photo {
+            flex: 1;
+            height: 180px;
+            background: linear-gradient(135deg, #f9f3e9, #f5e8d8);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed rgba(197, 160, 89, 0.3);
+        }
+
+        .couple-photo.bride {
+            background: linear-gradient(135deg, #fff0f3, #ffe6eb);
+        }
+
+        .couple-photo-label {
+            font-size: 0.85rem;
+            color: #a67c52;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* 文艺文本框 */
+        .literary-text {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: #5c3c20;
+            text-align: justify;
+            margin: 25px 0;
+            font-weight: 300;
+            position: relative;
+            padding: 0 5px;
+        }
+
+        .literary-text p {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+
+        .literary-text .highlight {
+            color: var(--accent);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        /* 分隔装饰 */
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider:before, .divider:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .divider:before {
+            left: 0;
+        }
+
+        .divider:after {
+            right: 0;
+        }
+
+        .divider span {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-family: 'Ma Shan Zheng', cursive;
+            padding: 0 15px;
+            background: var(--bg);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 底部互动按钮 */
+        .action-area {
+            text-align: center;
+            padding: 30px 0 50px;
+            background: linear-gradient(to bottom, rgba(253, 250, 245, 0.7), rgba(255, 240, 243, 0.5));
+            margin-top: 20px;
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        .toast-btn {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--gold), #d4af37);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(197, 160, 89, 0.3);
+            letter-spacing: 2px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Noto Serif SC', serif;
+            -webkit-appearance: none;
+        }
+
+        .toast-btn:hover, .toast-btn:active {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.4);
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .petal {
+            position: absolute;
+            background-color: #ffc0cb;
+            border-radius: 150% 0 150% 0;
+            animation: drift linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* 双喜装饰 */
+        .double-xi {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin: 25px 0;
+            letter-spacing: 20px;
+            text-shadow: 2px 2px 0 rgba(197, 160, 89, 0.2);
+            font-family: 'Ma Shan Zheng', cursive;
+            opacity: 0;
+            animation: fadeInUp 1.8s 0.8s ease forwards;
+            padding-left: 20px; /* 补偿letter-spacing */
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 30px 20px 40px;
+            color: #b8a089;
+            font-size: 0.85rem;
+            background: rgba(253, 250, 245, 0.9);
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            line-height: 1.6;
+        }
+
+        .signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #e0d5c5;
+            font-style: italic;
+            color: var(--gold);
+            font-family: 'ZCOOL XiaoWei', serif;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .header-section h1 { 
+                font-size: 2.8rem; 
+                letter-spacing: 2px;
+            }
+            
+            .header-section .subtitle { 
+                font-size: 1rem; 
+                letter-spacing: 5px;
+            }
+            
+            .double-xi { 
+                font-size: 2.8rem; 
+                letter-spacing: 15px;
+                margin: 20px 0;
+            }
+            
+            .content-section {
+                padding: 25px 15px;
+                width: 95%;
+            }
+            
+            .toast-btn { 
+                padding: 14px 30px; 
+                font-size: 1rem; 
+                letter-spacing: 1px;
+            }
+            
+            .photo-placeholder {
+                height: 200px;
+            }
+            
+            .couple-photo {
+                height: 160px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .header-section h1 { font-size: 4.5rem; }
+            .double-xi { font-size: 4.5rem; }
+        }
+
+        /* 防止微信调整字体大小 */
+        body {
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="petal-container"></div>
+
+    <section class="header-section">
+        <div style="font-size: 0.85rem; color: var(--gold); margin-bottom: 15px; letter-spacing: 3px; opacity: 0; animation: fadeInUp 1.8s 0.4s ease forwards;">远方寄来的祝福</div>
+        <h1>陈昌裕 & 梁其亮</h1>
+        <div class="subtitle">虽隔山海 · 共此佳期</div>
+        <div class="double-xi">囍</div>
+        <div class="wedding-date">良辰吉日 · 二〇二六年一月八</div>
+        <div style="margin-top: 30px; font-size: 0.9rem; color: #c5a059; opacity: 0; animation: fadeInUp 1.8s 1.2s ease forwards; font-style: italic;">↓ 请向下翻阅我的祝福 ↓</div>
+    </section>
+
+    <section class="content-section">
+        <div class="quote-box">
+            <h2 style="margin-bottom: 15px; color: var(--accent); font-family: 'Ma Shan Zheng', cursive; font-size: 1.8rem;">新婚志喜</h2>
+            <p style="font-size: 1.05rem; color: #7d5d3f; font-style: italic; font-family: 'ZCOOL XiaoWei', serif;">"山水不相逢，人间共此时。"</p>
+        </div>
+
+        <div class="literary-text">
+            <p>to my best friend：</p>
+            <p>遗憾的是我身在他乡，无法亲临婚礼现场、见证你们的幸福时刻</p>
+            <p>但我想，<span class="highlight">好的情谊从不必拘于形迹</span>。此刻我虽在千里之外，心意却与满堂宾客一同为你们雀跃。</p>
+        </div>
+
+        <div class="photo-area">
+            <img style="width: 100%" src="./1.jpg" alt="">
+            </div>
+        </div>
+
+        <div class="divider"><span>愿</span></div>
+
+        <div class="literary-text">
+            <p>愿你们<span class="highlight">一屋两人，三餐四季</span>，窗前有月，杯中有茶，心里有光。</p>
+            <p>愿你们<span class="highlight">既有岁月可回首，且以深情共白头</span>。</p>
+            <p>愿你们在彼此眼中，永远看见最初的心动，和最久的珍重。</p>
+        </div>
+
+
+        <div class="literary-text">
+            <p>缺席今日的盛宴，请收下我这份<span class="highlight">祝福</span></p>
+            <p>待他日重逢，定当补上这杯喜酒，听你们细说婚后点滴。</p>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center; padding-top: 25px; border-top: 1px dashed #e0d5c5;">
+             <p style="font-size: 1.1rem; color: var(--gold); font-weight: 400; letter-spacing: 1px;">—— 挚友 · CJX 敬上 ——</p>
+        </div>
+    </section>
+
+    <div class="action-area">
+        <button class="toast-btn" onclick="celebrate()">
+            <span style="font-size: 1.3rem;">🥂</span> 
+            隔空举杯，遥祝新禧
+            <span style="font-size: 1.3rem;">🥂</span>
+        </button>
+        <p style="margin-top: 20px; color: #a67c52; font-size: 0.9rem; font-style: italic;">点击按钮，送上我的祝福与喜悦</p>
+    </div>
+
+    <footer>
+        <p>虽未能亲至，但爱意与祝福从未缺席。</p>
+        <p>愿时光温柔，岁月静好，你们的故事里永远有光。</p>
+        <div class="signature">
+            <p>此页面专为陈昌裕先生与梁其亮女士新婚特别制作</p>
+            <p>以寄远方之思，以贺白首之约</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // 创建花瓣效果
+        function createPetal() {
+            const container = document.getElementById('petal-container');
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 12 + 8 + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+            petal.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            // 随机花瓣颜色
+            const colors = ['#ffc0cb', '#ffb6c1', '#ffa8b5', '#ff99aa', '#ff8da1'];
+            petal.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            container.appendChild(petal);
+            setTimeout(() => {
+                if (petal.parentNode === container) {
+                    container.removeChild(petal);
+                }
+            }, 12000);
+        }
+        
+        // 初始创建花瓣
+        for(let i = 0; i < 15; i++) {
+            setTimeout(() => createPetal(), i * 400);
+        }
+        
+        // 持续创建花瓣
+        setInterval(createPetal, 1000);
+
+        // 庆祝特效
+        function celebrate() {
+            var duration = 4.5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { 
+                startVelocity: 25, 
+                spread: 180, 
+                ticks: 60, 
+                zIndex: 999, 
+                scalar: 1.2,
+                colors: ['#c5a059', '#d9738f', '#ffcccc', '#ffffff']
+            };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              var particleCount = 40 * (timeLeft / duration);
+              
+              // 两侧发射
+              confetti(Object.assign({}, defaults, { 
+                  particleCount, 
+                  origin: { x: randomInRange(0.1, 0.3), y: Math.random() * 0.3 }, 
+              }));
+              
+              confetti(Object.assign({}, defaults, { 
+                  particleCount, 
+                  origin: { x: randomInRange(0.7, 0.9), y: Math.random() * 0.3 }, 
+              }));
+              
+              // 顶部心形效果
+              if (Math.random() > 0.7) {
+                  confetti({
+                      particleCount: 30,
+                      angle: 60,
+                      spread: 80,
+                      origin: { x: 0.5, y: 0.1 },
+                      colors: ['#c5a059', '#d9738f'],
+                      shapes: ['circle', 'heart']
+                  });
+              }
+            }, 200);
+            
+            // 按钮反馈效果
+            const button = document.querySelector('.toast-btn');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<span style="font-size: 1.3rem;">🎉</span> 祝福已送达，永远幸福！ <span style="font-size: 1.3rem;">🎉</span>';
+            button.style.background = 'linear-gradient(135deg, #d9738f, #ff8da1)';
+            
+            // 添加触觉反馈（如果设备支持）
+            if (navigator.vibrate) {
+                navigator.vibrate([50, 30, 50]);
+            }
+            
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.style.background = 'linear-gradient(135deg, var(--gold), #d4af37)';
+            }, 3000);
+        }
+        
+        // 页面加载完成后的动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 防止微信下拉刷新
+            document.body.addEventListener('touchmove', function(e) {
+                if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            // 适配iOS安全区域
+            const style = document.createElement('style');
+            style.textContent = `
+                .safe-area-padding {
+                    padding-top: env(safe-area-inset-top);
+                    padding-bottom: env(safe-area-inset-bottom);
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // 微信中防止字体被放大
+        if (typeof WeixinJSBridge !== "undefined") {
+            WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+        }
+    </script>
+</body>
+</html>
