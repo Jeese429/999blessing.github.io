@@ -22,7 +22,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        body {
+        html, body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Noto Serif SC', serif;
@@ -30,10 +30,17 @@
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             -webkit-text-size-adjust: 100%;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            height: 100%;
+            touch-action: pan-y; /* 改进滑动体验 */
         }
 
-        /* 花瓣飘落容器 */
+        body {
+            position: relative;
+            overflow-y: auto; /* 允许垂直滚动 */
+            -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+        }
+
+        /* 花瓣飘落容器 - 优化移动端性能 */
         #petal-container {
             position: fixed;
             top: 0; 
@@ -42,6 +49,7 @@
             height: 100%;
             pointer-events: none; 
             z-index: 0;
+            overflow: hidden;
         }
 
         /* 顶部大标题 */
@@ -129,7 +137,7 @@
             background: linear-gradient(to right, transparent, var(--gold), transparent);
         }
 
-        /* 照片区域 - 明确指出替换位置 */
+        /* 照片区域 */
         .photo-area {
             margin: 30px 0;
             position: relative;
@@ -155,24 +163,6 @@
             font-size: 3.5rem;
             margin-bottom: 15px;
             opacity: 0.7;
-        }
-
-        .photo-placeholder .photo-label {
-            font-size: 0.9rem;
-            color: #c99;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 5px 15px;
-            border-radius: 15px;
-            margin-top: 10px;
-            font-family: 'ZCOOL XiaoWei', serif;
-        }
-
-        .photo-note {
-            font-size: 0.8rem;
-            color: #aaa;
-            text-align: center;
-            margin-top: 10px;
-            font-style: italic;
         }
 
         /* 双联照片样式 */
@@ -304,17 +294,27 @@
             }
         }
 
+        /* 优化的花瓣样式 */
         .petal {
             position: absolute;
-            background-color: #ffc0cb;
-            border-radius: 150% 0 150% 0;
+            background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+            border-radius: 50% 0 50% 50%;
             animation: drift linear infinite;
             opacity: 0.7;
+            filter: blur(0.5px);
+            transform-origin: center;
         }
 
         @keyframes drift {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+            0% { 
+                transform: translateY(-10vh) rotate(0deg) scale(1); 
+                opacity: 0.9; 
+            }
+            70% { opacity: 0.7; }
+            100% { 
+                transform: translateY(110vh) rotate(360deg) scale(0.8); 
+                opacity: 0; 
+            }
         }
 
         /* 双喜装饰 */
@@ -353,23 +353,23 @@
         /* 响应式调整 */
         @media (max-width: 480px) {
             .header-section h1 { 
-                font-size: 2.8rem; 
+                font-size: 2.5rem; 
                 letter-spacing: 2px;
             }
             
             .header-section .subtitle { 
-                font-size: 1rem; 
-                letter-spacing: 5px;
+                font-size: 0.9rem; 
+                letter-spacing: 4px;
             }
             
             .double-xi { 
-                font-size: 2.8rem; 
-                letter-spacing: 15px;
-                margin: 20px 0;
+                font-size: 2.2rem; 
+                letter-spacing: 12px;
+                margin: 15px 0;
             }
             
             .content-section {
-                padding: 25px 15px;
+                padding: 20px 15px;
                 width: 95%;
             }
             
@@ -380,17 +380,21 @@
             }
             
             .photo-placeholder {
-                height: 200px;
+                height: 180px;
             }
             
             .couple-photo {
-                height: 160px;
+                height: 140px;
+            }
+            
+            .literary-text {
+                font-size: 0.95rem;
             }
         }
 
         @media (min-width: 768px) {
-            .header-section h1 { font-size: 4.5rem; }
-            .double-xi { font-size: 4.5rem; }
+            .header-section h1 { font-size: 4rem; }
+            .double-xi { font-size: 4rem; }
         }
 
         /* 防止微信调整字体大小 */
@@ -398,9 +402,16 @@
             -webkit-text-size-adjust: 100% !important;
             text-size-adjust: 100% !important;
         }
+        
+        /* 改进微信滑动体验 */
+        .scroll-container {
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
-<body>
+<body class="scroll-container">
 
     <div id="petal-container"></div>
 
@@ -409,7 +420,7 @@
         <h1>陈昌裕 & 梁其亮</h1>
         <div class="subtitle">虽隔山海 · 共此佳期</div>
         <div class="double-xi">囍</div>
-        <div class="wedding-date">良辰吉日 · 二〇二六年一月八</div>
+        <div class="wedding-date">良辰吉日 · 二〇二六年一月八日</div>
         <div style="margin-top: 30px; font-size: 0.9rem; color: #c5a059; opacity: 0; animation: fadeInUp 1.8s 1.2s ease forwards; font-style: italic;">↓ 请向下翻阅我的祝福 ↓</div>
     </section>
 
@@ -426,8 +437,7 @@
         </div>
 
         <div class="photo-area">
-            <img style="width: 100%" src="./1.jpg" alt="">
-            </div>
+            <img style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);" src="./1.jpg" alt="陈昌裕&梁其亮的甜蜜时刻">
         </div>
 
         <div class="divider"><span>愿</span></div>
@@ -437,7 +447,6 @@
             <p>愿你们<span class="highlight">既有岁月可回首，且以深情共白头</span>。</p>
             <p>愿你们在彼此眼中，永远看见最初的心动，和最久的珍重。</p>
         </div>
-
 
         <div class="literary-text">
             <p>缺席今日的盛宴，请收下我这份<span class="highlight">祝福</span></p>
@@ -469,37 +478,56 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // 创建花瓣效果
+        // 优化花瓣效果 - 增加花瓣数量和效果
         function createPetal() {
             const container = document.getElementById('petal-container');
             const petal = document.createElement('div');
             petal.classList.add('petal');
-            const size = Math.random() * 12 + 8 + 'px';
+            
+            // 随机大小 (15-25px)
+            const size = Math.random() * 10 + 15 + 'px';
             petal.style.width = size;
             petal.style.height = size;
+            
+            // 随机位置
             petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.animationDuration = Math.random() * 6 + 6 + 's';
-            petal.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            // 随机动画时长和延迟
+            const duration = Math.random() * 8 + 8 + 's';
+            petal.style.animationDuration = duration;
+            
+            // 随机延迟开始
+            const delay = Math.random() * 5 + 's';
+            petal.style.animationDelay = delay;
+            
+            // 随机透明度
+            petal.style.opacity = Math.random() * 0.6 + 0.4;
             
             // 随机花瓣颜色
-            const colors = ['#ffc0cb', '#ffb6c1', '#ffa8b5', '#ff99aa', '#ff8da1'];
-            petal.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            const colors = [
+                '#ffc0cb', '#ffb6c1', '#ffa8b5', '#ff99aa', 
+                '#ff8da1', '#ffc0cb', '#ffb6c1', '#ffa8b5'
+            ];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            petal.style.background = `linear-gradient(135deg, ${color}, ${color}dd)`;
             
             container.appendChild(petal);
+            
+            // 花瓣动画结束后移除
             setTimeout(() => {
                 if (petal.parentNode === container) {
                     container.removeChild(petal);
                 }
-            }, 12000);
+            }, 16000); // 16秒后移除
         }
         
-        // 初始创建花瓣
-        for(let i = 0; i < 15; i++) {
-            setTimeout(() => createPetal(), i * 400);
+        // 初始创建更多花瓣
+        for(let i = 0; i < 25; i++) {
+            setTimeout(() => createPetal(), i * 300);
         }
         
-        // 持续创建花瓣
-        setInterval(createPetal, 1000);
+        // 持续创建花瓣，间隔更短
+        setInterval(createPetal, 800);
 
         // 庆祝特效
         function celebrate() {
@@ -521,7 +549,7 @@
             var interval = setInterval(function() {
               var timeLeft = animationEnd - Date.now();
               if (timeLeft <= 0) return clearInterval(interval);
-              var particleCount = 40 * (timeLeft / duration);
+              var particleCount = 50 * (timeLeft / duration);
               
               // 两侧发射
               confetti(Object.assign({}, defaults, { 
@@ -564,30 +592,76 @@
             }, 3000);
         }
         
-        // 页面加载完成后的动画
+        // 页面加载完成后的优化
         document.addEventListener('DOMContentLoaded', function() {
-            // 防止微信下拉刷新
-            document.body.addEventListener('touchmove', function(e) {
-                if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
-                    e.preventDefault();
-                }
-            }, { passive: false });
+            // 移除原有的touchmove阻止，改进滑动体验
+            // 添加滚动优化
+            let lastTouchY = 0;
+            let isScrolling = false;
             
-            // 适配iOS安全区域
-            const style = document.createElement('style');
-            style.textContent = `
-                .safe-area-padding {
-                    padding-top: env(safe-area-inset-top);
-                    padding-bottom: env(safe-area-inset-bottom);
+            document.body.addEventListener('touchstart', function(e) {
+                lastTouchY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            // 优化微信中的滚动体验
+            // 添加一个简单的惯性滚动模拟
+            let startY = 0;
+            let scrollTop = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].pageY;
+                scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            }, { passive: true });
+            
+            // 微信中防止字体被放大
+            if (typeof WeixinJSBridge !== "undefined") {
+                WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+                // 禁止微信下拉刷新
+                document.addEventListener('WeixinJSBridgeReady', function() {
+                    WeixinJSBridge.call('hideOptionMenu');
+                });
+            }
+            
+            // 禁用双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
                 }
-            `;
-            document.head.appendChild(style);
+                lastTouchEnd = now;
+            }, false);
+            
+            // 为移动端优化性能
+            const petalsContainer = document.getElementById('petal-container');
+            if (window.innerWidth < 768) {
+                // 在移动端减少花瓣数量
+                clearInterval(window.petalInterval);
+                window.petalInterval = setInterval(createPetal, 1200);
+                
+                // 清理多余的花瓣
+                setInterval(() => {
+                    const petals = petalsContainer.children;
+                    if (petals.length > 20) {
+                        for (let i = 0; i < 5; i++) {
+                            if (petals.length > 0) {
+                                petalsContainer.removeChild(petals[0]);
+                            }
+                        }
+                    }
+                }, 5000);
+            }
         });
         
-        // 微信中防止字体被放大
-        if (typeof WeixinJSBridge !== "undefined") {
-            WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+        // 修复iOS Safari 100vh问题
+        function setFullHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
         }
+        
+        setFullHeight();
+        window.addEventListener('resize', setFullHeight);
+        window.addEventListener('orientationchange', setFullHeight);
     </script>
 </body>
 </html>
